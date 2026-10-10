@@ -1,11 +1,9 @@
 # Home Assistant Lovelace MQTT Comfoair Card
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=TimWeyand&repository=lovelace-comfoair&category=plugin)
+Lovelace card for visualizing and controlling a **ComfoAir Q350** ventilation system,
+connected through **[comfoconnect](https://github.com/michaelarnauts/home-assistant-comfoconnect)** (by michaelarnauts)
 
-Lovelace card for visualizing and controlling a **ComfoAir CA350/550** ventilation system,
-connected through **[hacomfoairmqtt](https://github.com/adorobis/hacomfoairmqtt)** (adorobis) or the
-related **comfoair2mqtt** add-on (MQTT autodiscovery).
+Based on the original work of [TimWeyand](https://github.com/TimWeyand/lovelace-comfoair) and locailization by [tarbax](https://github.com/tarbax/lovelace-comfoair)
 
 <img src="https://raw.githubusercontent.com/TimWeyand/lovelace-comfoair/master/images/static-dark.png" alt="MQTT Comfoair Card" width="440">
 

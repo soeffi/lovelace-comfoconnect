@@ -20,9 +20,9 @@ console.info(
   (window as unknown as { customCards: unknown[] }).customCards || [];
 (window as unknown as { customCards: unknown[] }).customCards.push({
   type: CARD_TYPE,
-  name: 'MQTT Comfoair Card',
+  name: 'Comfoconnect Comfoair Card',
   preview: false,
-  description: 'Control a CA350/550 ventilation unit (hacomfoairmqtt) via MQTT.',
+  description: 'Control a Q350 ventilation unit via Comfoconnect integration.',
 });
 
 // Strömungspfade (SVG-userSpace 0 0 440 132) — als Konstanten, damit das sichtbare <path>
