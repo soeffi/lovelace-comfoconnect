@@ -16,6 +16,18 @@ export const FAN_BUTTONS: FanButton[] = [
   { mode: 'high', icon: 'mdi:fan-speed-3' },
 ];
 
+export interface FanSpeed {
+  mode: FanMode;
+  speed: number;
+}
+
+export const FAN_SPEEDS: FanSpeed[] = [
+  {mode: 'off', speed: 0},
+  {mode: 'low', speed: 33},
+  {mode: 'medium', speed: 66},
+  {mode: 'high', speed: 100},
+];
+
 /** Anzeige-Labels der Lüfterstufen (eine Quelle für Karte + Status-Chip). */
 export const FAN_MODE_LABELS: Record<string, string> = {
   off: 'Aus', low: 'Stufe 1', medium: 'Stufe 2', high: 'Stufe 3',
@@ -23,7 +35,7 @@ export const FAN_MODE_LABELS: Record<string, string> = {
 
 /** Config-Schlüssel, die auf HA-Entities zeigen (eine Quelle für shouldUpdate + Editor-Reset). */
 export const ENTITY_FIELDS: readonly string[] = [
-  'entity', 'tempSensor1', 'tempSensor2', 'tempSensor3', 'tempSensor4',
+  'entity', 'fan', 'tempSensor1', 'tempSensor2', 'tempSensor3', 'tempSensor4',
   'filterstatus', 'bypass_valve', 'summer_mode', 'preheat',
   'fan_speed_supply', 'fan_speed_exhaust', 'return_air_level', 'supply_air_level',
 ];

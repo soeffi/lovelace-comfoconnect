@@ -1,5 +1,5 @@
 import { ComfoairCardConfig, DetectHass, HassEntityLike } from './types';
-import { FAN_MODE_LABELS } from './const';
+import { FAN_MODE_LABELS, FAN_SPEEDS, FanSpeed } from './const';
 import { localize, localizeFormat } from './localize';
 
 export function getState(
@@ -32,6 +32,12 @@ export function numState(hass: DetectHass | undefined, entityId?: string): numbe
 export function isFanModeActive(fanMode: string | undefined, mode: string): boolean {
   return !!fanMode && fanMode.toLowerCase() === mode.toLowerCase();
 }
+
+export const speedToMode = (speed: number): FanSpeed['mode'] | undefined =>
+  FAN_SPEEDS.find((f) => f.speed === speed)?.mode;
+
+export const modeToSpeed = (mode: FanSpeed['mode']): number | undefined =>
+  FAN_SPEEDS.find((f) => f.mode === mode)?.speed;
 
 export function clampTemperature(
   current: number, step: number, min: number, max: number, direction: 1 | -1,

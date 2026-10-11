@@ -1,12 +1,14 @@
-import { LitElement, html, svg, css, PropertyValues, TemplateResult, CSSResultGroup } from 'lit';
+import { LitElement, html, svg, css, PropertyValues, TemplateResult, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { HomeAssistant, LovelaceCard, LovelaceCardEditor, fireEvent } from 'custom-card-helpers';
 import './comfoair-card-editor';
 import { ComfoairCardConfig, DetectHass } from './types';
-import { CARD_TYPE, EDITOR_TYPE, CARD_VERSION, FAN_BUTTONS, FAN_MODE_LABELS, ENTITY_FIELDS } from './const';
+import { CARD_TYPE, EDITOR_TYPE, CARD_VERSION, FAN_BUTTONS, FAN_MODE_LABELS, ENTITY_FIELDS, FanMode } from './const';
 import {
   getState, displayState, numState, isFanModeActive, clampTemperature, autodetectEntities,
   tempDomain, tempColor, rampColor, recoveryPct, statusChip, animSpeedFactor,
+  speedToMode,
+  modeToSpeed,
 } from './helpers';
 import { localize, localizeFormat } from './localize';
 
@@ -82,15 +84,14 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
     const cfg = this._config;
     const h = this.hass as unknown as DetectHass;
     const climate = getState(h, cfg.entity);
-    if (!climate) {
-      return html`<ha-card>
-        <hui-warning>${localize('no_entity', this.hass.language)}: ${cfg.entity || '—'}</hui-warning>
-      </ha-card>`;
-    }
 
-    const fanMode = climate.attributes.fan_mode as string | undefined;
+    const fanSpeed = getState(h, cfg.fan)?.attributes?.percentage as number | undefined;
+    const fanMode = fanSpeed
+      ? speedToMode(fanSpeed)
+      : climate?.attributes?.fan_mode as string | undefined;
+
     const fanModeLc = fanMode?.toLowerCase();
-    const setpoint = climate.attributes.temperature as number | undefined;
+    const setpoint = climate?.attributes?.temperature as number | undefined;
     const animated = cfg.animation === 'animated';
     const scale: 'auto' | 'fixed' = cfg.color_scale === 'fixed' ? 'fixed' : 'auto';
     const running = !!fanModeLc && fanModeLc !== 'off';
@@ -149,11 +150,12 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
 
     const hub = html`
       <div class="hub corehub">
+        ${ setpoint ? html`
         <div class="setpc">
           <button @click=${(): void => this._stepTemp(-1)} aria-label=${localize('colder', this.hass.language)}>−</button>
           <div class="val">${setpoint != null ? fmt(String(setpoint)) : '—'}<small>°C</small></div>
           <button @click=${(): void => this._stepTemp(1)} aria-label=${localize('warmer', this.hass.language)}>+</button>
-        </div>
+        </div>` : nothing }  
         <div class="fanrow">
           ${FAN_BUTTONS.map(
             (b) => html`<button
@@ -250,10 +252,19 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
   }
 
   private _setFan(mode: string): void {
-    if (!this._config.entity) return;
-    this.hass.callService('climate', 'set_fan_mode', {
-      entity_id: this._config.entity, fan_mode: mode,
-    });
+    if(this._config.entity) {
+      this.hass.callService('climate', 'set_fan_mode', {
+        entity_id: this._config.entity, fan_mode: mode,
+      });
+    } else if (this._config.fan) {
+      const speed = modeToSpeed(mode as FanMode);
+      if (speed === undefined) return;
+
+      this.hass.callService('fan', 'set_percentage', {
+        entity_id: this._config.fan_mode, percentage: speed,
+      });
+    }
+
   }
 
   private _stepTemp(direction: 1 | -1): void {

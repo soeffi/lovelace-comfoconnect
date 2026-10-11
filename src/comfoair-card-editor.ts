@@ -10,6 +10,7 @@ type FormSchema = Record<string, unknown>;
 
 const ADVANCED_SCHEMA: FormSchema[] = [
   { name: 'name', selector: { text: {} } },
+  { name: 'fan', selector: { entity: { domain: 'fan' } } },
   { name: 'tempSensor1', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
   { name: 'tempSensor2', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
   { name: 'tempSensor3', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
@@ -46,7 +47,7 @@ export class MqttComfoairCardEditor extends LitElement implements LovelaceCardEd
   private _mainSchema(): FormSchema[] {
     const cfg = this._config;
     const schema: FormSchema[] = [
-      { name: 'entity', required: true, selector: { entity: { domain: 'climate' } } },
+      { name: 'entity', required: false, selector: { entity: { domain: 'climate' } } },
       { name: 'animation', selector: { select: { options: [
         { value: 'animated', label: localize('animated', this.hass.language) },
         { value: 'static', label: localize('static', this.hass.language) },
