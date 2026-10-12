@@ -213,16 +213,12 @@ export function autodetectEntities(
 ): Partial<ComfoairCardConfig> {
   if (!hass || !deviceId) return {};
 
-  console.log(deviceId);
-
   let candidateIds: string[] = [];
   if (deviceId && hass.entities) {
     candidateIds = Object.keys(hass.entities).filter(
       (id) => hass.entities![id].device_id === deviceId,
     );
   }
-
-  console.log("Anzahl %i", candidateIds.length);
 
   const result: Partial<ComfoairCardConfig> = {};
   for (const rule of DETECT_RULES) {
