@@ -3,9 +3,11 @@
 Lovelace card for visualizing and controlling a **ComfoAir Q350** ventilation system,
 connected through **[comfoconnect](https://github.com/michaelarnauts/home-assistant-comfoconnect)** (by michaelarnauts)
 
-Based on the original work of [TimWeyand](https://github.com/TimWeyand/lovelace-comfoair) and locailization by [tarbax](https://github.com/tarbax/lovelace-comfoair)
+Based on the original work of [TimWeyand](https://github.com/TimWeyand/lovelace-comfoair) and localization by [tarbax](https://github.com/tarbax/lovelace-comfoair)
 
-<img src="https://raw.githubusercontent.com/TimWeyand/lovelace-comfoair/master/images/static-dark.png" alt="MQTT Comfoair Card" width="440">
+Changes in this fork with respect to the original card:
+* Adapt to entities provided by comfoconnect, which differ from the esphome integration (use fan instead of climate etity, etc.)
+* Add further entities (humidity, volume flow, etc.)
 
 ## Features
 
@@ -22,8 +24,8 @@ Based on the original work of [TimWeyand](https://github.com/TimWeyand/lovelace-
 
 | | Static (default) | Animated (`animation: animated`) |
 |---|---|---|
-| **Light** | <img src="https://raw.githubusercontent.com/TimWeyand/lovelace-comfoair/master/images/static-light.png" width="320" alt="Static light"> | <img src="https://raw.githubusercontent.com/TimWeyand/lovelace-comfoair/master/images/animated-light.gif" width="320" alt="Animated light"> |
-| **Dark** | <img src="https://raw.githubusercontent.com/TimWeyand/lovelace-comfoair/master/images/static-dark.png" width="320" alt="Static dark"> | <img src="https://raw.githubusercontent.com/TimWeyand/lovelace-comfoair/master/images/animated-dark.gif" width="320" alt="Animated dark"> |
+| **Light** | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoair/master/images/static-light.png" width="320" alt="Static light"> | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoair/master/images/animated-light.gif" width="320" alt="Animated light"> |
+| **Dark** | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoair/master/images/static-dark.png" width="320" alt="Static dark"> | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoair/master/images/animated-dark.gif" width="320" alt="Animated dark"> |
 
 ## Installation
 
@@ -33,7 +35,7 @@ choose **Download** there.
 
 If HACS does not find the repository directly, add it once as a custom repository:
 1. HACS → top right **⋮** → **Custom repositories**
-2. Repository `https://github.com/TimWeyand/lovelace-comfoair`, category **Dashboard** → **Add**
+2. Repository `https://github.com/soeffi/lovelace-comfoair`, category **Dashboard** → **Add**
 3. **MQTT Comfoair Card** → **Download**
 
 ### Manual
@@ -49,8 +51,6 @@ type: module
 1. Dashboard → Add card → **MQTT Comfoair Card**.
 2. **Select only the climate entity** (for example, `climate.ca350_climate`); the remaining entities
    are detected automatically. They can be overridden under **Advanced / manual mapping**.
-
-<img src="https://raw.githubusercontent.com/TimWeyand/lovelace-comfoair/master/images/settings.png" alt="Card editor with all options" width="460">
 
 ### Options
 

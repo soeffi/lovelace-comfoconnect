@@ -16,7 +16,7 @@ const ADVANCED_SCHEMA: FormSchema[] = [
   { name: 'tempSensor3', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
   { name: 'tempSensor4', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
   { name: 'filterstatus', selector: { entity: { domain: 'binary_sensor' } } },
-  { name: 'bypass_valve', selector: { entity: { domain: 'binary_sensor' } } },
+  { name: 'bypass_valve', selector: { entity: { domain: 'binary_sensor' } } }, 
   { name: 'summer_mode', selector: { entity: { domain: 'binary_sensor' } } },
   { name: 'preheat', selector: { entity: { domain: 'binary_sensor' } } },
   { name: 'fan_speed_supply', selector: { entity: { domain: 'sensor' } } },
