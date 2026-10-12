@@ -15,22 +15,24 @@ const ADVANCED_SCHEMA: FormSchema[] = [
   { name: 'tempSensor2', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
   { name: 'tempSensor3', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
   { name: 'tempSensor4', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
-  { name: 'filterstatus', selector: { entity: { domain: 'binary_sensor' } } },
-  { name: 'bypass_valve', selector: { entity: { domain: 'binary_sensor' } } }, 
-  { name: 'summer_mode', selector: { entity: { domain: 'binary_sensor' } } },
-  { name: 'preheat', selector: { entity: { domain: 'binary_sensor' } } },
+  { name: 'filterstatus', selector: { entity: { domain: 'sensor' } } },
+  { name: 'bypass_valve', selector: { entity: { domain: ['binary_sensor', 'sensor'] } } }, 
+  //{ name: 'summer_mode', selector: { entity: { domain: 'binary_sensor' } } },
+  //{ name: 'preheat', selector: { entity: { domain: 'binary_sensor' } } },
   { name: 'fan_speed_supply', selector: { entity: { domain: 'sensor' } } },
   { name: 'fan_speed_exhaust', selector: { entity: { domain: 'sensor' } } },
   { name: 'return_air_level', selector: { entity: { domain: 'sensor' } } },
   { name: 'supply_air_level', selector: { entity: { domain: 'sensor' } } },
+  { name: 'constraint', selector: { entity: { domain: 'sensor' } } },
+  
 ];
 
 const LABELS: Record<string, string> = {
-  entity: 'climate_entity', animation: 'animation', animation_speed_source: 'speed_source', animation_speed: 'fixed_speed',
+  device: 'device', animation: 'animation', animation_speed_source: 'speed_source', animation_speed: 'fixed_speed',
   color_scale: 'color_scale', temp_min: 'fixed_min', temp_max: 'fixed_max', show_legend: 'show_scale', name: 'optional_name',
   tempSensor1: 'outside_temperature', tempSensor2: 'exhaust_temperature', tempSensor3: 'return_temperature', tempSensor4: 'supply_temperature',
   filterstatus: 'filter_status', bypass_valve: 'bypass_valve', summer_mode: 'summer_mode', preheat: 'preheat_register',
-  fan_speed_supply: 'supply_fan_speed', fan_speed_exhaust: 'exhaust_fan_speed', return_air_level: 'return_level', supply_air_level: 'supply_level',
+  fan_speed_supply: 'supply_fan_speed', fan_speed_exhaust: 'exhaust_fan_speed', return_air_level: 'return_level', supply_air_level: 'supply_level', constraint: 'constraint',
 };
 
 @customElement(EDITOR_TYPE)
@@ -47,7 +49,8 @@ export class MqttComfoairCardEditor extends LitElement implements LovelaceCardEd
   private _mainSchema(): FormSchema[] {
     const cfg = this._config;
     const schema: FormSchema[] = [
-      { name: 'entity', required: false, selector: { entity: { domain: 'climate' } } },
+      { name: 'device', required: false, selector: { device: { entity :{ domain: ['climate', 'fan'] } } } },
+      //{ name: 'entity', required: false, selector: { entity: { domain: 'climate' } } },
       { name: 'animation', selector: { select: { options: [
         { value: 'animated', label: localize('animated', this.hass.language) },
         { value: 'static', label: localize('static', this.hass.language) },
@@ -110,17 +113,19 @@ export class MqttComfoairCardEditor extends LitElement implements LovelaceCardEd
   private _mainChanged(ev: CustomEvent): void {
     ev.stopPropagation();
     const value = ev.detail.value as Partial<ComfoairCardConfig>;
-    const newEntity = value.entity ?? '';
-    const entityChanged = !!newEntity && newEntity !== this._config.entity;
+    
+    const newDevice = value.device ?? '';
+    const deviceChanged = !!newDevice && newDevice !== this._config.device;
+
     let next: ComfoairCardConfig = { ...this._config, ...value };
-    if (entityChanged) {
+    if (deviceChanged) {
       // alte auto-erkannte Felder verwerfen, dann für die neue Entity frisch erkennen,
       // damit keine Sensoren des vorherigen Geräts stehen bleiben
       const cleared = next as unknown as Record<string, unknown>;
       for (const f of ENTITY_FIELDS) {
         if (f !== 'entity') delete cleared[f];
       }
-      const detected = autodetectEntities(this.hass as unknown as DetectHass, newEntity);
+      const detected = autodetectEntities(this.hass as unknown as DetectHass, newDevice);
       next = { ...next, ...detected };
       this._detectedCount = Object.keys(detected).length;
     }

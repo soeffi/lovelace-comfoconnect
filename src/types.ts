@@ -3,7 +3,8 @@ import { LovelaceCardConfig } from 'custom-card-helpers';
 export interface ComfoairCardConfig extends LovelaceCardConfig {
   type: string;
   name?: string;
-  entity: string;
+  device?: string;
+  entity?: string;
   fan: string;
   tempSensor1?: string; // Außentemperatur
   tempSensor2?: string; // Fortlufttemperatur
@@ -11,12 +12,13 @@ export interface ComfoairCardConfig extends LovelaceCardConfig {
   tempSensor4?: string; // Zulufttemperatur
   filterstatus?: string;
   bypass_valve?: string;
-  summer_mode?: string;
-  preheat?: string;
+  //summer_mode?: string;
+  //preheat?: string;
   fan_speed_supply?: string;
   fan_speed_exhaust?: string;
   return_air_level?: string;
   supply_air_level?: string;
+  constraint?: string;
   animation?: 'animated' | 'static';
   animation_speed_source?: 'fixed' | 'level'; // festes Tempo oder nach Luftmengen-%
   animation_speed?: number; // Prozent (10–200), nur bei animation_speed_source = 'fixed'

@@ -120,12 +120,14 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
     const bypassState = getState(h, cfg.bypass_valve)?.state;
     const recov = bypassState === 'on' ? null : recoveryPct(t1, t3, t4);
 
+    console.log("Bypass %s", bypassState)
+
     const chips = [
       statusChip('fan', undefined, fanMode, this.hass.language),
       statusChip('filter', getState(h, cfg.filterstatus)?.state, undefined, this.hass.language),
       statusChip('bypass', bypassState, undefined, this.hass.language),
-      statusChip('preheat', getState(h, cfg.preheat)?.state, undefined, this.hass.language),
-      statusChip('season', getState(h, cfg.summer_mode)?.state, undefined, this.hass.language),
+      //statusChip('preheat', getState(h, cfg.preheat)?.state, undefined, this.hass.language),
+      //statusChip('season', getState(h, cfg.summer_mode)?.state, undefined, this.hass.language),
     ];
 
     const fmt = (s: string): string => s.replace('.', ',');

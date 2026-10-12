@@ -162,9 +162,9 @@ export function statusChip(
       return { icon: 'mdi:fan', label: localize('fan', lang), sub: fm === 'off' ? localize('fan_off', lang) : localizeFormat('fan_level', lang, { level }), active: fm !== 'off', color: '#03a9f4' };
     }
     case 'filter':
-      return { icon: 'mdi:air-filter', label: localize('filter', lang), sub: on ? localize('filter_change', lang) : localize('ok', lang), active: on, color: '#f5a623' };
+      return { icon: 'mdi:air-filter', label: localize('filter', lang), sub: (raw ?? '-') + ' d', active: Number(raw) < 0, color: '#f5a623' };
     case 'bypass':
-      return { icon: 'mdi:valve', label: localize('bypass', lang), sub: on ? localize('open', lang) : localize('closed', lang), active: on, color: '#36c46b' };
+      return { icon: 'mdi:valve', label: localize('bypass', lang), sub: (raw ?? '-') + '%', active: Number(raw) > 0, color: '#36c46b' };
     case 'preheat':
       return { icon: 'mdi:radiator', label: localize('preheating', lang), sub: on ? localize('active', lang) : localize('fan_off', lang), active: on, color: '#ff7043' };
     case 'season':
@@ -180,9 +180,9 @@ type Predicate = (st: HassEntityLike) => boolean;
 
 interface DetectRule {
   field: keyof ComfoairCardConfig;
-  domain: 'sensor' | 'binary_sensor';
+  domain: 'sensor' | 'binary_sensor' | 'fan' ;
   predicate: Predicate;
-  keywords: string[];
+  keywords?: string[];
 }
 
 const isTemp: Predicate = (st) => st.attributes?.device_class === 'temperature';
@@ -191,39 +191,38 @@ const isPct: Predicate = (st) => st.attributes?.unit_of_measurement === '%';
 const anyState: Predicate = () => true;
 
 const DETECT_RULES: DetectRule[] = [
-  { field: 'tempSensor1', domain: 'sensor', predicate: isTemp, keywords: ['outside', 'outdoor', 'außen', 'aussen'] },
-  { field: 'tempSensor2', domain: 'sensor', predicate: isTemp, keywords: ['exhaust', 'fortluft', 'abluft'] },
-  { field: 'tempSensor3', domain: 'sensor', predicate: isTemp, keywords: ['return', 'extract', 'rückluft', 'rueckluft'] },
-  { field: 'tempSensor4', domain: 'sensor', predicate: isTemp, keywords: ['supply', 'zuluft'] },
-  { field: 'filterstatus', domain: 'binary_sensor', predicate: anyState, keywords: ['filter'] },
-  { field: 'bypass_valve', domain: 'binary_sensor', predicate: anyState, keywords: ['bypass'] },
-  { field: 'summer_mode', domain: 'binary_sensor', predicate: anyState, keywords: ['summer', 'sommer'] },
-  { field: 'preheat', domain: 'binary_sensor', predicate: anyState, keywords: ['preheat', 'preheating', 'vorheiz'] },
+  { field: 'fan', domain: 'fan', predicate: anyState},
+  { field: 'tempSensor1', domain: 'sensor', predicate: isTemp, keywords: ['outside', 'outdoor'] },
+  { field: 'tempSensor2', domain: 'sensor', predicate: isTemp, keywords: ['exhaust'] },
+  { field: 'tempSensor3', domain: 'sensor', predicate: isTemp, keywords: ['return', 'extract', 'inside'] },
+  { field: 'tempSensor4', domain: 'sensor', predicate: isTemp, keywords: ['supply'] },
+  { field: 'filterstatus', domain: 'sensor', predicate: anyState, keywords: ['filter'] },
+  { field: 'bypass_valve', domain: 'sensor', predicate: isPct, keywords: ['bypass'] },
+  //{ field: 'summer_mode', domain: 'binary_sensor', predicate: anyState, keywords: ['summer', 'sommer'] },
+  //{ field: 'preheat', domain: 'binary_sensor', predicate: anyState, keywords: ['preheat', 'preheating', 'vorheiz'] },
   { field: 'fan_speed_supply', domain: 'sensor', predicate: isRpm, keywords: ['supply', 'zuluft'] },
   { field: 'fan_speed_exhaust', domain: 'sensor', predicate: isRpm, keywords: ['exhaust', 'fortluft', 'abluft'] },
-  { field: 'return_air_level', domain: 'sensor', predicate: isPct, keywords: ['return', 'extract', 'rückluft', 'rueckluft'] },
-  { field: 'supply_air_level', domain: 'sensor', predicate: isPct, keywords: ['supply', 'zuluft'] },
+  { field: 'return_air_level', domain: 'sensor', predicate: isPct, keywords: ['exhaust_fan_duty'] },
+  { field: 'supply_air_level', domain: 'sensor', predicate: isPct, keywords: ['supply_fan_duty'] },
+  { field: 'constraint', domain: 'sensor', predicate: anyState, keywords: ['constraint'] },
 ];
 
 export function autodetectEntities(
   hass: DetectHass,
-  climateEntityId: string,
+  deviceId: string,
 ): Partial<ComfoairCardConfig> {
-  if (!hass || !climateEntityId) return {};
+  if (!hass || !deviceId) return {};
+
+  console.log(deviceId);
 
   let candidateIds: string[] = [];
-  const deviceId = hass.entities?.[climateEntityId]?.device_id ?? undefined;
   if (deviceId && hass.entities) {
     candidateIds = Object.keys(hass.entities).filter(
       (id) => hass.entities![id].device_id === deviceId,
     );
   }
-  if (candidateIds.length === 0) {
-    const prefix = derivePrefix(climateEntityId);
-    candidateIds = Object.keys(hass.states).filter(
-      (id) => id.startsWith(`sensor.${prefix}_`) || id.startsWith(`binary_sensor.${prefix}_`),
-    );
-  }
+
+  console.log("Anzahl %i", candidateIds.length);
 
   const result: Partial<ComfoairCardConfig> = {};
   for (const rule of DETECT_RULES) {
@@ -232,7 +231,9 @@ export function autodetectEntities(
       const st = hass.states[id];
       if (!st || !rule.predicate(st)) return false;
       const hay = `${id} ${String(st.attributes?.friendly_name ?? '')}`.toLowerCase();
-      return rule.keywords.some((k) => hay.includes(k));
+      
+      if (!rule.keywords?.length) return true;      
+      return rule.keywords.some((k) => hay.includes(k)) ;
     });
     if (matches.length) {
       // bei mehreren Treffern den kürzesten (kanonischen) Namen wählen,
