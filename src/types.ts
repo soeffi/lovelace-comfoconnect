@@ -4,6 +4,7 @@ export interface ComfoairCardConfig extends LovelaceCardConfig {
   type: string;
   name?: string;
   entity: string;
+  fan: string;
   tempSensor1?: string; // Außentemperatur
   tempSensor2?: string; // Fortlufttemperatur
   tempSensor3?: string; // Rücklufttemperatur
