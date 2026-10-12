@@ -145,8 +145,8 @@ const pe=e=>(t,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(e,t)}
 
         <div class="status">
           ${C.map(e=>V`<div class="chip ${e.active?"on":""}" style="--c:${e.color}">
-              <ha-icon icon=${e.icon}></ha-icon>
-              <span class="nm">${e.label}</span>
+              <ha-icon icon=${e.icon} title=${e.label}></ha-icon>
+              <!--<span class="nm">${e.label}</span>-->
               ${e.sub?V`<span class="vs">${e.sub}</span>`:""}
             </div>`)}
         </div>
@@ -249,7 +249,8 @@ const pe=e=>(t,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(e,t)}
       .chip { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 2px 4px; border-radius: 11px; color: var(--secondary-text-color); transition: 0.25s; }
       .chip ha-icon { --mdc-icon-size: 23px; transition: 0.25s; }
       .chip .nm { font-size: 10.5px; font-weight: 600; }
-      .chip .vs { font-size: 9px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--secondary-text-color); opacity: 0.65; }
+      /*.chip .vs { font-size: 9px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--secondary-text-color); opacity: 0.65; }*/
+      .chip .vs { font-size: 11px; color: var(--secondary-text-color); opacity: 0.9; }
       .chip.on { color: var(--c); background: color-mix(in srgb, var(--c) 12%, transparent); }
       .chip.on .vs { color: var(--c); opacity: 0.9; }
       .chip.on ha-icon { filter: drop-shadow(0 0 7px var(--c)); }
