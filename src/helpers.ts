@@ -186,6 +186,7 @@ interface DetectRule {
 }
 
 const isTemp: Predicate = (st) => st.attributes?.device_class === 'temperature';
+const isHum: Predicate = (st) => st.attributes?.device_class === 'humidity';
 const isRpm: Predicate = (st) => st.attributes?.unit_of_measurement === 'rpm';
 const isPct: Predicate = (st) => st.attributes?.unit_of_measurement === '%';
 const anyState: Predicate = () => true;
@@ -196,14 +197,21 @@ const DETECT_RULES: DetectRule[] = [
   { field: 'tempSensor2', domain: 'sensor', predicate: isTemp, keywords: ['exhaust'] },
   { field: 'tempSensor3', domain: 'sensor', predicate: isTemp, keywords: ['return', 'extract', 'inside'] },
   { field: 'tempSensor4', domain: 'sensor', predicate: isTemp, keywords: ['supply'] },
+  { field: 'humSensor1', domain: 'sensor', predicate: isHum, keywords: ['outside', 'outdoor'] },
+  { field: 'humSensor2', domain: 'sensor', predicate: isHum, keywords: ['exhaust'] },
+  { field: 'humSensor3', domain: 'sensor', predicate: isHum, keywords: ['return', 'extract', 'inside'] },
+  { field: 'humSensor4', domain: 'sensor', predicate: isHum, keywords: ['supply'] },
+ 
   { field: 'filterstatus', domain: 'sensor', predicate: anyState, keywords: ['filter'] },
   { field: 'bypass_valve', domain: 'sensor', predicate: isPct, keywords: ['bypass'] },
   //{ field: 'summer_mode', domain: 'binary_sensor', predicate: anyState, keywords: ['summer', 'sommer'] },
   //{ field: 'preheat', domain: 'binary_sensor', predicate: anyState, keywords: ['preheat', 'preheating', 'vorheiz'] },
   { field: 'fan_speed_supply', domain: 'sensor', predicate: isRpm, keywords: ['supply', 'zuluft'] },
   { field: 'fan_speed_exhaust', domain: 'sensor', predicate: isRpm, keywords: ['exhaust', 'fortluft', 'abluft'] },
-  { field: 'return_air_level', domain: 'sensor', predicate: isPct, keywords: ['exhaust_fan_duty'] },
-  { field: 'supply_air_level', domain: 'sensor', predicate: isPct, keywords: ['supply_fan_duty'] },
+  { field: 'level_supply', domain: 'sensor', predicate: isPct, keywords: ['supply_fan_duty'] },
+  { field: 'level_exhaust', domain: 'sensor', predicate: isPct, keywords: ['exhaust_fan_duty'] },
+  { field: 'flow_supply', domain: 'sensor', predicate: anyState, keywords: ['supply_airflow'] },
+  { field: 'flow_exhaust', domain: 'sensor', predicate: anyState, keywords: ['exhaust_airflow'] },
   { field: 'constraint', domain: 'sensor', predicate: anyState, keywords: ['constraint'] },
 ];
 

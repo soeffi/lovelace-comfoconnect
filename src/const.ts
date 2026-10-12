@@ -35,7 +35,9 @@ export const FAN_MODE_LABELS: Record<string, string> = {
 
 /** Config-Schlüssel, die auf HA-Entities zeigen (eine Quelle für shouldUpdate + Editor-Reset). */
 export const ENTITY_FIELDS: readonly string[] = [
-  'entity', 'fan', 'tempSensor1', 'tempSensor2', 'tempSensor3', 'tempSensor4',
+  'fan',
+  'tempSensor1', 'tempSensor2', 'tempSensor3', 'tempSensor4',
+  'humSensor1', 'humSensor2', 'humSensor3', 'humSensor4',
   'filterstatus', 'bypass_valve', 'summer_mode', 'preheat',
-  'fan_speed_supply', 'fan_speed_exhaust', 'return_air_level', 'supply_air_level',
+  'fan_speed_supply', 'fan_speed_exhaust', 'level_supply', 'level_exhaust', 'flow_supply', 'flow_exhaust',
 ];

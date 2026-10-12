@@ -38,7 +38,10 @@ const STRINGS: Record<string, Dict> = {
     filter: 'Filter', filter_change: 'Wechseln', ok: 'OK', bypass: 'Bypass', open: 'Offen', closed: 'Zu', preheating: 'Vorheizen', active: 'Aktiv', summer: 'Sommer', winter: 'Winter',
     device: 'Gerät', climate_entity: 'Climate-Entity', animation: 'Animation', animated: 'Animiert (Luftströme + Lüfter)', static: 'Statisch', speed_source: 'Tempo-Quelle', fixed_speed: 'Festes Tempo (%)', air_level: 'Nach Luftmenge (Supply/Return %)',
     color_scale: 'Farbskala', auto_current: 'Auto (aktuelle Werte)', fixed_manual: 'Fest (manueller Bereich)', fixed_min: 'Feste Skala - Min (°C)', fixed_max: 'Feste Skala - Max (°C)', show_scale: 'Temperaturskala einblenden', optional_name: 'Name (optional)',
-    outside_temperature: 'Außentemperatur', exhaust_temperature: 'Fortlufttemperatur', return_temperature: 'Ablufttemperatur', supply_temperature: 'Zulufttemperatur', filter_status: 'Filterstatus', bypass_valve: 'Bypass-Ventil', summer_mode: 'Sommermodus', preheat_register: 'Vorheizregister', supply_fan_speed: 'Lüfterdrehzahl Zuluft', exhaust_fan_speed: 'Lüfterdrehzahl Fortluft', return_level: 'Rückluft-Stufe', supply_level: 'Zuluft-Stufe',
+    outside_temperature: 'Außentemperatur', exhaust_temperature: 'Fortlufttemperatur', return_temperature: 'Ablufttemperatur', supply_temperature: 'Zulufttemperatur',
+    outside_humidity: 'Außenfeuchte', exhaust_humidity: 'Fortluftfeuchte', return_humidity: 'Abluftfeuchte', supply_humidity: 'Zuluftfeuchte',
+    filter_status: 'Filterstatus', bypass_valve: 'Bypass-Ventil', summer_mode: 'Sommermodus', preheat_register: 'Vorheizregister',
+    supply_fan_speed: 'Lüfterdrehzahl Zuluft', exhaust_fan_speed: 'Lüfterdrehzahl Fortluft', level_supply: 'Lüfter-Stufe Zuluft', level_exhaust: 'Lüfter-Stufe Abluft', flow_supply: 'Volumenstrom Zuluft', flow_exhaust: 'Volumenstrom Abluft',
     constraint: 'Airflow Constraint',
   },
   nb: {

@@ -139,11 +139,14 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
       const dur = SPIN_BASE / factor;
       return html`<div class="subt ${entityId ? 'clickable' : ''}" @click=${(): void => this._moreInfo(entityId)}>
         <ha-icon class=${spin ? 'spinico spin' : 'spinico'} style=${spin ? `animation-duration:${dur.toFixed(2)}s` : ''} icon="mdi:fan"></ha-icon>
-        <span>${displayState(h, entityId)}</span>&nbsp;rpm
+        <span>${displayState(h, entityId)}</span>rpm
       </div>`;
     };
     const subPct = (entityId?: string): TemplateResult => html`<div class="subt ${entityId ? 'clickable' : ''}" @click=${(): void => this._moreInfo(entityId)}>
-        <ha-icon icon="mdi:gauge"></ha-icon><span>${displayState(h, entityId)}</span>&nbsp;%
+        <ha-icon icon="mdi:gauge"></ha-icon><span>${displayState(h, entityId)}</span>%
+      </div>`;
+    const subFlow = (entityId?: string): TemplateResult => html`<div class="subt ${entityId ? 'clickable' : ''}" @click=${(): void => this._moreInfo(entityId)}>
+        <ha-icon icon="mdi:weather-dust"></ha-icon><span>${displayState(h, entityId)}</span>m³/h
       </div>`;
     const lbl = (icon: string, text: string, rev = false): TemplateResult =>
       html`<div class="lbl ${rev ? 'rev' : ''}"><ha-icon icon=${icon}></ha-icon>${text}</div>`;
@@ -183,9 +186,11 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
 
         <div class="lanes">
           <div class="trow top">
-            <div class="tcell l">${subRpm(cfg.fan_speed_supply, facSup)}${tempBadge(c1, cfg.tempSensor1)}${lbl('mdi:tree-outline', localize('outside_air', this.hass.language))}</div>
+            <div class="tcell l">${tempBadge(c1, cfg.tempSensor1)}${lbl('mdi:tree-outline', localize('outside_air', this.hass.language))}</div>
             <div></div>
-            <div class="tcell r">${subPct(cfg.return_air_level)}${tempBadge(c3, cfg.tempSensor3)}${lbl('mdi:home-thermometer-outline', localize('return_air', this.hass.language), true)}</div>
+            <div></div>
+            <div></div>
+            <div class="tcell r">${tempBadge(c3, cfg.tempSensor3)}${lbl('mdi:home-thermometer-outline', localize('return_air', this.hass.language), true)}</div>
           </div>
 
           <div class="flowband">
@@ -211,9 +216,11 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
           </div>
 
           <div class="trow bot">
-            <div class="tcell l">${lbl('mdi:export', localize('exhaust_air', this.hass.language))}${tempBadge(c2, cfg.tempSensor2)}${subRpm(cfg.fan_speed_exhaust, facExh)}</div>
+            <div class="tcell l">${lbl('mdi:export', localize('exhaust_air', this.hass.language))}${tempBadge(c2, cfg.tempSensor2)}</div>
+            <div class="tcell l">${subRpm(cfg.fan_speed_exhaust, facExh)}${subPct(cfg.level_exhaust)}${subFlow(cfg.flow_exhaust)}</div>
             <div></div>
-            <div class="tcell r">${lbl('mdi:import', localize('supply_air', this.hass.language), true)}${tempBadge(c4, cfg.tempSensor4)}${subPct(cfg.supply_air_level)}</div>
+            <div class="tcell r">${subRpm(cfg.fan_speed_supply, facSup)}${subPct(cfg.level_supply)}${subFlow(cfg.flow_supply)}</div>
+            <div class="tcell r">${lbl('mdi:import', localize('supply_air', this.hass.language), true)}${tempBadge(c4, cfg.tempSensor4)}</div>
           </div>
         </div>
 
@@ -353,7 +360,7 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
       .fanrow ha-icon { --mdc-icon-size: 18px; }
 
       .lanes { display: flex; flex-direction: column; gap: 3px; --hub-w: 188px; }
-      .trow { display: grid; grid-template-columns: 1fr var(--hub-w) 1fr; gap: 10px; padding: 0 6px; }
+      .trow { display: grid; grid-template-columns: 1fr 1fr auto 1fr 1fr; gap: 10px; padding: 0 6px; }
       .trow.top { align-items: end; }
       .trow.bot { align-items: start; }
       .tcell { display: flex; flex-direction: column; gap: 2px; min-width: 0; }

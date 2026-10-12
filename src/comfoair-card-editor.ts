@@ -15,14 +15,20 @@ const ADVANCED_SCHEMA: FormSchema[] = [
   { name: 'tempSensor2', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
   { name: 'tempSensor3', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
   { name: 'tempSensor4', selector: { entity: { domain: 'sensor', device_class: 'temperature' } } },
+  { name: 'humSensor1', selector: { entity: { domain: 'sensor', device_class: 'humerature' } } },
+  { name: 'humSensor2', selector: { entity: { domain: 'sensor', device_class: 'humerature' } } },
+  { name: 'humSensor3', selector: { entity: { domain: 'sensor', device_class: 'humerature' } } },
+  { name: 'humSensor4', selector: { entity: { domain: 'sensor', device_class: 'humerature' } } },
   { name: 'filterstatus', selector: { entity: { domain: 'sensor' } } },
   { name: 'bypass_valve', selector: { entity: { domain: ['binary_sensor', 'sensor'] } } }, 
   //{ name: 'summer_mode', selector: { entity: { domain: 'binary_sensor' } } },
   //{ name: 'preheat', selector: { entity: { domain: 'binary_sensor' } } },
   { name: 'fan_speed_supply', selector: { entity: { domain: 'sensor' } } },
   { name: 'fan_speed_exhaust', selector: { entity: { domain: 'sensor' } } },
-  { name: 'return_air_level', selector: { entity: { domain: 'sensor' } } },
-  { name: 'supply_air_level', selector: { entity: { domain: 'sensor' } } },
+  { name: 'level_supply', selector: { entity: { domain: 'sensor' } } },
+  { name: 'level_exhaust', selector: { entity: { domain: 'sensor' } } },
+  { name: 'flow_supply', selector: { entity: { domain: 'sensor' } } },
+  { name: 'flow_exhaust', selector: { entity: { domain: 'sensor' } } },
   { name: 'constraint', selector: { entity: { domain: 'sensor' } } },
   
 ];
@@ -31,8 +37,10 @@ const LABELS: Record<string, string> = {
   device: 'device', animation: 'animation', animation_speed_source: 'speed_source', animation_speed: 'fixed_speed',
   color_scale: 'color_scale', temp_min: 'fixed_min', temp_max: 'fixed_max', show_legend: 'show_scale', name: 'optional_name',
   tempSensor1: 'outside_temperature', tempSensor2: 'exhaust_temperature', tempSensor3: 'return_temperature', tempSensor4: 'supply_temperature',
+  humSensor1: 'outside_humidity', humSensor2: 'exhaust_humidity', humSensor3: 'return_humidity', humSensor4: 'supply_humidity',
   filterstatus: 'filter_status', bypass_valve: 'bypass_valve', summer_mode: 'summer_mode', preheat: 'preheat_register',
-  fan_speed_supply: 'supply_fan_speed', fan_speed_exhaust: 'exhaust_fan_speed', return_air_level: 'return_level', supply_air_level: 'supply_level', constraint: 'constraint',
+  fan_speed_supply: 'supply_fan_speed', fan_speed_exhaust: 'exhaust_fan_speed', level_exhaust: 'level_exhaust', level_supply: 'level_supply', flow_exhaust: 'flow_exhaust', flow_supply: 'flow_supply',
+  constraint: 'constraint',
 };
 
 @customElement(EDITOR_TYPE)
