@@ -124,6 +124,7 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
       statusChip('fan', undefined, fanMode, this.hass.language),
       statusChip('filter', getState(h, cfg.filterstatus)?.state, undefined, this.hass.language),
       statusChip('bypass', bypassState, undefined, this.hass.language),
+      statusChip('constraint', getState(h, cfg.constraint)?.state, undefined, this.hass.language),
       //statusChip('preheat', getState(h, cfg.preheat)?.state, undefined, this.hass.language),
       //statusChip('season', getState(h, cfg.summer_mode)?.state, undefined, this.hass.language),
     ];
@@ -147,6 +148,9 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
       </div>`;
     const subFlow = (entityId?: string): TemplateResult => html`<div class="subt ${entityId ? 'clickable' : ''}" @click=${(): void => this._moreInfo(entityId)}>
         <ha-icon icon="mdi:weather-dust"></ha-icon><span>${displayState(h, entityId)}</span>m³/h
+      </div>`;
+    const subHum = (entityId?: string): TemplateResult => html`<div class="subt ${entityId ? 'clickable' : ''}" @click=${(): void => this._moreInfo(entityId)}>
+        <ha-icon icon="mdi:water-percent"></ha-icon><span>${displayState(h, entityId)}</span>%
       </div>`;
     const lbl = (icon: string, text: string, rev = false): TemplateResult =>
       html`<div class="lbl ${rev ? 'rev' : ''}"><ha-icon icon=${icon}></ha-icon>${text}</div>`;
@@ -186,11 +190,11 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
 
         <div class="lanes">
           <div class="trow top">
-            <div class="tcell l">${tempBadge(c1, cfg.tempSensor1)}${lbl('mdi:tree-outline', localize('outside_air', this.hass.language))}</div>
+            <div class="tcell l">${subHum(cfg.humSensor1)}${tempBadge(c1, cfg.tempSensor1)}${lbl('mdi:tree-outline', localize('outside_air', this.hass.language))}</div>
             <div></div>
             <div></div>
             <div></div>
-            <div class="tcell r">${tempBadge(c3, cfg.tempSensor3)}${lbl('mdi:home-thermometer-outline', localize('return_air', this.hass.language), true)}</div>
+            <div class="tcell r">${subHum(cfg.humSensor3)}${tempBadge(c3, cfg.tempSensor3)}${lbl('mdi:home-thermometer-outline', localize('return_air', this.hass.language), true)}</div>
           </div>
 
           <div class="flowband">
@@ -216,11 +220,11 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
           </div>
 
           <div class="trow bot">
-            <div class="tcell l">${lbl('mdi:export', localize('exhaust_air', this.hass.language))}${tempBadge(c2, cfg.tempSensor2)}</div>
+            <div class="tcell l">${lbl('mdi:export', localize('exhaust_air', this.hass.language))}${tempBadge(c2, cfg.tempSensor2)}${subHum(cfg.humSensor2)}</div>
             <div class="tcell l">${subRpm(cfg.fan_speed_exhaust, facExh)}${subPct(cfg.level_exhaust)}${subFlow(cfg.flow_exhaust)}</div>
             <div></div>
             <div class="tcell r">${subRpm(cfg.fan_speed_supply, facSup)}${subPct(cfg.level_supply)}${subFlow(cfg.flow_supply)}</div>
-            <div class="tcell r">${lbl('mdi:import', localize('supply_air', this.hass.language), true)}${tempBadge(c4, cfg.tempSensor4)}</div>
+            <div class="tcell r">${lbl('mdi:import', localize('supply_air', this.hass.language), true)}${tempBadge(c4, cfg.tempSensor4)}${subHum(cfg.humSensor4)}</div>
           </div>
         </div>
 

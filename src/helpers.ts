@@ -142,7 +142,7 @@ export function animSpeedFactor(
 
 /* ===== Status-Chips ===== */
 
-export type StatusKind = 'fan' | 'filter' | 'bypass' | 'preheat' | 'season';
+export type StatusKind = 'fan' | 'filter' | 'bypass' | 'constraint' | 'season' | 'preheat' ;
 export interface StatusChip {
   icon: string;
   label: string;
@@ -171,6 +171,8 @@ export function statusChip(
       return on
         ? { icon: 'mdi:weather-sunny', label: localize('summer', lang), sub: '', active: true, color: '#ffb300' }
         : { icon: 'mdi:snowflake', label: localize('winter', lang), sub: '', active: true, color: '#4fc3f7' };
+    case 'constraint':
+      return { icon: 'mdi:fan-alert', label: localize('constraint', lang), sub: localize(raw ?? '-', lang), active: (raw !== undefined), color: '#ff7043' };
   }
 }
 

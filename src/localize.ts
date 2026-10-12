@@ -42,7 +42,7 @@ const STRINGS: Record<string, Dict> = {
     outside_humidity: 'Außenfeuchte', exhaust_humidity: 'Fortluftfeuchte', return_humidity: 'Abluftfeuchte', supply_humidity: 'Zuluftfeuchte',
     filter_status: 'Filterstatus', bypass_valve: 'Bypass-Ventil', summer_mode: 'Sommermodus', preheat_register: 'Vorheizregister',
     supply_fan_speed: 'Lüfterdrehzahl Zuluft', exhaust_fan_speed: 'Lüfterdrehzahl Fortluft', level_supply: 'Lüfter-Stufe Zuluft', level_exhaust: 'Lüfter-Stufe Abluft', flow_supply: 'Volumenstrom Zuluft', flow_exhaust: 'Volumenstrom Abluft',
-    constraint: 'Airflow Constraint',
+    constraint: 'Airflow Constraint', NoiseGuard: 'Schallbegrenzung'
   },
   nb: {
     invalid_config: 'Ikke gyldig konfigurasjon',
