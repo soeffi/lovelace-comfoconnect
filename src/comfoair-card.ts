@@ -86,10 +86,18 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
     const climate = getState(h, cfg.entity);
 
     const fanSpeed = getState(h, cfg.fan)?.attributes?.percentage as number | undefined;
-    const fanMode = fanSpeed
+    const fanMode = fanSpeed !== undefined
       ? speedToMode(fanSpeed)
       : climate?.attributes?.fan_mode as string | undefined;
 
+      console.log('test');
+      console.log(fanSpeed);
+      console.log(typeof(fanSpeed));
+      console.log('speed %f', fanSpeed);
+      console.log(fanMode);
+      console.log(speedToMode(0));
+      console.log('---\n');
+    
     const fanModeLc = fanMode?.toLowerCase();
     const setpoint = climate?.attributes?.temperature as number | undefined;
     const animated = cfg.animation === 'animated';
@@ -389,7 +397,7 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
       /*.status { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--divider-color); }*/
       .status { display: grid; grid-auto-flow: column; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--divider-color); }
       .chip { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 2px 4px; border-radius: 11px; color: var(--secondary-text-color); transition: 0.25s; }
-      .chip ha-icon { --mdc-icon-size: 23px; transition: 0.25s; }
+      .chip ha-icon { --mdc-icon-size: 20px; transition: 0.25s; }
       .chip .nm { font-size: 10.5px; font-weight: 600; }
       /*.chip .vs { font-size: 9px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--secondary-text-color); opacity: 0.65; }*/
       .chip .vs { font-size: 11px; color: var(--secondary-text-color); opacity: 0.9; }

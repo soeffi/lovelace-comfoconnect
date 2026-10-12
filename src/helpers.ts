@@ -34,7 +34,7 @@ export function isFanModeActive(fanMode: string | undefined, mode: string): bool
 }
 
 export const speedToMode = (speed: number): FanSpeed['mode'] | undefined =>
-  FAN_SPEEDS.find((f) => f.speed === speed)?.mode;
+  FAN_SPEEDS.find((f) => f.speed == speed)?.mode;
 
 export const modeToSpeed = (mode: FanSpeed['mode']): number | undefined =>
   FAN_SPEEDS.find((f) => f.mode === mode)?.speed;
@@ -172,7 +172,12 @@ export function statusChip(
         ? { icon: 'mdi:weather-sunny', label: localize('summer', lang), sub: '', active: true, color: '#ffb300' }
         : { icon: 'mdi:snowflake', label: localize('winter', lang), sub: '', active: true, color: '#4fc3f7' };
     case 'constraint':
-      return { icon: 'mdi:fan-alert', label: localize('constraint', lang), sub: localize(raw ?? '-', lang), active: (raw !== undefined), color: '#ff7043' };
+      const CONSTRAINTS: Record<string, string> = {
+        'NoiseGuard': localize('NoiseGuard', lang),
+        '': '-',
+      }
+      const strConstraint = localize(CONSTRAINTS[raw ?? ''], lang) ?? '?';
+      return { icon: 'mdi:fan-alert', label: localize('constraint', lang), sub: strConstraint, active: (raw ?? '').length > 0, color: '#ff7043' };
   }
 }
 
