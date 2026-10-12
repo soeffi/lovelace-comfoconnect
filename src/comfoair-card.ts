@@ -89,14 +89,6 @@ export class MqttComfoairCard extends LitElement implements LovelaceCard {
     const fanMode = fanSpeed !== undefined
       ? speedToMode(fanSpeed)
       : climate?.attributes?.fan_mode as string | undefined;
-
-      console.log('test');
-      console.log(fanSpeed);
-      console.log(typeof(fanSpeed));
-      console.log('speed %f', fanSpeed);
-      console.log(fanMode);
-      console.log(speedToMode(0));
-      console.log('---\n');
     
     const fanModeLc = fanMode?.toLowerCase();
     const setpoint = climate?.attributes?.temperature as number | undefined;
