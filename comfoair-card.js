@@ -244,7 +244,8 @@ const pe=e=>(t,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(e,t)}
       .legend .mn, .legend .mx { font-size: 11px; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; font-weight: 600; min-width: 44px; }
       .legend .mx { text-align: right; }
 
-      .status { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--divider-color); }
+      /*.status { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--divider-color); }*/
+      .status { display: grid; grid-auto-flow: column; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--divider-color); }
       .chip { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 2px 4px; border-radius: 11px; color: var(--secondary-text-color); transition: 0.25s; }
       .chip ha-icon { --mdc-icon-size: 23px; transition: 0.25s; }
       .chip .nm { font-size: 10.5px; font-weight: 600; }
