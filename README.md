@@ -24,8 +24,8 @@ Changes in this fork with respect to the original card:
 
 | | Static (default) | Animated (`animation: animated`) |
 |---|---|---|
-| **Light** | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoair/master/images/static-light.png" width="320" alt="Static light"> | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoair/master/images/animated-light.gif" width="320" alt="Animated light"> |
-| **Dark** | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoair/master/images/static-dark.png" width="320" alt="Static dark"> | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoair/master/images/animated-dark.gif" width="320" alt="Animated dark"> |
+| **Light** | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoconnect/master/images/static-light.png" width="320" alt="Static light"> | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoconnect/master/images/animated-light.gif" width="320" alt="Animated light"> |
+| **Dark** | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoconnect/master/images/static-dark.png" width="320" alt="Static dark"> | <img src="https://raw.githubusercontent.com/soeffi/lovelace-comfoconnect/master/images/animated-dark.gif" width="320" alt="Animated dark"> |
 
 ## Installation
 
@@ -35,28 +35,28 @@ choose **Download** there.
 
 If HACS does not find the repository directly, add it once as a custom repository:
 1. HACS → top right **⋮** → **Custom repositories**
-2. Repository `https://github.com/soeffi/lovelace-comfoair`, category **Dashboard** → **Add**
+2. Repository `https://github.com/soeffi/lovelace-comfoconnect`, category **Dashboard** → **Add**
 3. **MQTT Comfoair Card** → **Download**
 
 ### Manual
 Download `comfoair-card.js` from the **[latest release](../../releases/latest)** (or from the repository),
-copy it to `config/www/lovelace-comfoair/comfoair-card.js`, and register it as a resource:
+copy it to `config/www/lovelace-comfoconnect/comfoair-card.js`, and register it as a resource:
 ```yaml
-url: /local/lovelace-comfoair/comfoair-card.js
+url: /local/lovelace-comfoconnect/comfoair-card.js
 type: module
 ```
 
 ## Configuration
 
 1. Dashboard → Add card → **MQTT Comfoair Card**.
-2. **Select only the climate entity** (for example, `climate.ca350_climate`); the remaining entities
+2. **Select the comfoair device** the remaining entities
    are detected automatically. They can be overridden under **Advanced / manual mapping**.
 
 ### Options
 
 | Option | Values | Default | Description |
 |--------|-------|---------|--------------|
-| `entity` | climate entity | – | **Required.** The ComfoAir climate entity. |
+| `device` | climate or fan device | – | A ComfoAir device. If set, this will autodetect and fill the individual sensors settings |
 | `name` | Text | “Residential ventilation” | Title in the card header. |
 | `animation` | `static` / `animated` | `static` | Animated airflows + rotating fans. |
 | `animation_speed_source` | `fixed` / `level` | `fixed` | Fixed speed (%) or proportional to the airflow level (supply/return air level). |
@@ -65,7 +65,7 @@ type: module
 | `temp_min` | °C | `-10` | Lower limit of the fixed scale. |
 | `temp_max` | °C | `30` | Upper limit of the fixed scale. |
 | `show_legend` | bool | `false` | Show a small temperature color scale at the bottom. |
-| `tempSensor1..4`, `filterstatus`, `bypass_valve`, `summer_mode`, `preheat`, `fan_speed_supply`, `fan_speed_exhaust`, `return_air_level`, `supply_air_level` | Entity | auto-detected | Can be overridden individually. |
+| `tempSensor1..4`, `humSensor1..4`, `filterstatus`, `bypass_valve`, `summer_mode`, `preheat`, `fan_speed_supply`, `fan_speed_exhaust`, `level_supply`, `level_exhaust`, `flow_supply`, `flow_exhaust` | Entity | auto-detected | Can be overridden individually. |
 
 ### Performance
 By default (`static`), **no** animation runs: no SMIL and no CSS rotation. The card only
